@@ -142,7 +142,7 @@ Field          | Description
 -----          | -----------
 _sim\_num_     | raw number of simulated TCR amino acid sequences having this CDR3AA
 _ML_           | ML estimate of probability of observing sequence from data (P\_data)
-_donors_       | number of donors in selected cohort having this sequence
+_donors_       | number of donors in selected cohort having this CDR3AA
 _P\_post_      | theoretical probability to observe sequence, estimated from recombination model
 _pval\_post_   | p\-value (not corrected for multiple testing)
-_effect\_size_ | effect size is log10(_ML_)\-log10(_P\_post_)
+_effect\_size_ | log10(effect size) is log10(_ML_)\-log10(_P\_post_)
