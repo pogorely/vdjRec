@@ -11,11 +11,11 @@ Any OS where R is available (Linux, OS X, Windows), however parallel computing i
 
 1. Install R distribution of choice (i.e. from [R Core team](https://cloud.r-project.org/), or [Microsoft R Open](https://mran.microsoft.com/open/) )
 2. Install BioStrings package from bioconductor: open R console and execute following commands: 
-3. Download this repository and unzip demo.zip.
 ```R
 source("https://bioconductor.org/biocLite.R")
 biocLite("Biostrings")
 ```
+3. Download this repository and unzip demo.zip.
 
 
 ## Quick start
@@ -60,7 +60,8 @@ CDR3s_p<-estimate_pgen_aa(CDR3s,iter=3,nrec=5e5,V="TRBV5-1",J="TRBJ1-1",colname=
 #we could easily convert counts to probs
 CDR3s_p$Pgen=(CDR3s_p$sim_num)/(5e5*3)
 
-#We could do more with more cores (currently OS X and Linux). Note, that now total number of generated sequences is nrec*iter*cores = 5e5*3*2.
+#We could do more with more cores (currently OS X and Linux). 
+#Note, that now total number of generated sequences is nrec*iter*cores = 5e5*3*2.
 CDR3s_p<-estimate_pgen_aa(CDR3s,iter=3,nrec=5e5,cores=2,V="TRBV5-1",J="TRBJ1-1",colname="CDR3.amino.acid.sequence")
 ```
 
@@ -112,7 +113,8 @@ source("analysis.R")
 CDR3s<-read.csv2("demo/TCRBV07-06_TCRBJ01-04.csv")
 
 #lets generate 2e9 sequences to estimate generation probability. 
-#This takes some time, approx 2 hours on 8-core intel i7 processor. For demo purposes skip it, and load precomputed table below:
+#This takes some time, approx 2 hours on 8-core intel i7 processor. 
+#For demo purposes skip it, and load precomputed table below:
 CDR3s_p<-estimate_pgen_aa(CDR3s,iter=500,nrec=5e5,cores=8, V="TRBV7-6",J="TRBJ1-4")
 
 #We could load precomputed table:
@@ -133,3 +135,14 @@ CDR3s_p<-CDR3s_p[CDR3s_p$sim_num>0,]
 CDR3s_p[p.adjust(CDR3s_p$pval_post,method="holm")<0.05,c("sim_num","CDR3.amino.acid.sequence","donors","P_post","pval_post","effect_size")]
 
 ```
+
+Here is short final output description. See methods section in the manuscript (link to arxiv) for detailed description. 
+
+Field          | Description
+-----          | -----------
+_sim\_num_     | raw number of simulated TCR amino acid sequences having this CDR3AA
+_ML_           | ML estimate of probability of observing sequence from data (P\_data)
+_donors_       | number of donors in selected cohort having this sequence
+_P\_post_      | theoretical probability to observe sequence, estimated from recombination model
+_pval\_post_   | p\-value (not corrected for multiple testing)
+_effect\_size_ | effect size is log10(_ML_)\-log10(_P\_post_)
