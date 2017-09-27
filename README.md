@@ -85,8 +85,8 @@ This is most advanced part.
 Note, that all analysis is needed to be done for each VJ combination separately.
 
 We would need two things: 
-1. Table with CDR3 amino acid sequence and columns indicating presence (or read count) in our donors. Typically, this is a result of merge of sample dataframes by CDR3 amino acid sequence.  
-2. Table with sizes of repertoire of given donors VJ combination (= number of unique CDR3 beta clonotypes with this VJ combination), and column indicating if you want to use this sample for current analysis (normally this indicates, that sample corresponds to patient cohort).
+1. Table with CDR3 amino acid sequence and columns indicating presence (or read count) in our donors. Typically, this is a result of merge of sample dataframes by CDR3 amino acid sequence. See _demo\/TCRBV05\-01\_TCRBJ01\-01.csv_ for example.
+2. Table with sizes of repertoire of given donors VJ combination (= number of unique CDR3 beta clonotypes with this VJ combination), and column indicating if you want to use this sample for current analysis (normally this indicates, that sample corresponds to patient cohort). See _demo\/samples\_TCRBV05\-01\_TCRBJ01\-01.csv_ for example.
 
 Table 1. example: 
 
@@ -114,10 +114,13 @@ CDR3s<-read.csv2("demo/TCRBV07-06_TCRBJ01-04.csv")
 
 #lets generate 2e9 sequences to estimate generation probability. 
 #This takes some time, approx 2 hours on 8-core intel i7 processor. 
-#For demo purposes skip it, and load precomputed table below:
+#For demo purposes skip it, and load precomputed table (see below)
 CDR3s_p<-estimate_pgen_aa(CDR3s,iter=500,nrec=5e5,cores=8, V="TRBV7-6",J="TRBJ1-4")
 
-#We could load precomputed table:
+#Analogous command for single core (use on windows), this simulation takes approx 16 hours of time, so do not run it.
+CDR3s_p<-estimate_pgen_aa(CDR3s,iter=500*8,nrec=5e5,cores=1, V="TRBV7-6",J="TRBJ1-4")
+
+#To save time, we could load precomputed table:
 CDR3s_p<-read.csv2("demo/res_TCRBV07-06_TCRBJ01-04.csv")
 #read sample sheet
 sizes<-read.csv2("demo/samples_TCRBV07-06_TCRBJ01-04.csv")
