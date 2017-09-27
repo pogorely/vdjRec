@@ -124,12 +124,12 @@ gen_VDJ<-function(n,Vseq,Jseq,Dseq,delV,delJ,delD,insLenVD,insLenDJ,insNuclVD,in
   res
 }
 
-#generate beta chain sequence
+#function to generate beta chain sequence
 gen_beta<-function(n,V,J,pr=beta.prob,translate=T,inframe_only=T)
 {
   tmp<-pr$P.ins.nucl[,1]
   pr$P.ins.nucl<-as.matrix(pr$P.ins.nucl[,-1])
-  pr$P.ins.len<-pr$P.ins.len[1:15,]#actually it is a bug. 
+  pr$P.ins.len<-pr$P.ins.len[1:15,]
   row.names(pr$P.ins.nucl)<-tmp
   Ddist<-round(prop.table(pr$P.J.D[row.names(pr$P.J.D)==J,])*n) 
   Vi<-which(colnames(pr$P.del.V)==V)
