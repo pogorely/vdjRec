@@ -134,6 +134,7 @@ gen_beta<-function(n,V,J,pr=beta.prob,translate=T,inframe_only=T)
   Ddist<-round(prop.table(pr$P.J.D[row.names(pr$P.J.D)==J,])*n) 
   Vi<-which(colnames(pr$P.del.V)==V)
   Ji<-which(colnames(pr$P.del.J)==J)
+  if((V%in%segments$TRBV$V.alleles)&(J%in%segments$TRBJ$J.alleles)){
   Vs<-segments$TRBV$Nucleotide.sequence[segments$TRBV$V.alleles==V]
   Js<-segments$TRBJ$Nucleotide.sequence[segments$TRBJ$J.alleles==J]
   res<-c(gen_VDJ(n=Ddist[1],
@@ -162,7 +163,30 @@ gen_beta<-function(n,V,J,pr=beta.prob,translate=T,inframe_only=T)
             sep = "" ))
   if(inframe_only|translate)res<-res[nchar(res)%%3==0]
   if(translate){translate_cdr(res)}
-  else{res}
+  else{res}}
+}
+
+get_vj<-function(file){
+  VJ_aging<-fread(file)
+  names(VJ_aging)[3]<-"clonotypes"
+  VJ_aging[,p:=prop.table(clonotypes),]
+  VJ_aging[,VJ:=paste0(v,"_",j),]
+  setkey(VJ_aging,VJ)
+  VJ_aging
+}
+
+gen_beta_repertoire<-function(n,VJ_usage,pr=beta.prob,translate=T,inframe_only=T){
+  #sample n into VJ_classes. 
+  #VJ usage is table V J prob. 
+  VJ_usage$sample<-rmultinom(1,size=n,prob = VJ_usage$clonotypes)
+  resl<-list()
+  for (i in 1:nrow(VJ_usage)){
+    if(VJ_usage$sample[i]!=0){
+    gen_seq<-gen_beta(n=VJ_usage$sample[i],V=VJ_usage$v[i],J=VJ_usage$j[i])
+    if(length(gen_seq)!=0)
+    resl[[i]]<-data.frame(seq=gen_seq,V=VJ_usage$v[i],J=VJ_usage$j[i],stringsAsFactors = F)}
+  }
+  do.call(rbind,resl)
 }
 
 
