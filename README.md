@@ -2,7 +2,7 @@
 TCR amino acid sequence generation and recombination probability estimation in R. Some R skills are required to use advanced features.  
 
 ## About
-This software allows to calculate recombination probability of TCR sequence, simulate TCR repertoire, and identify candidate condition-associated T-cell receptor sequences using only patient cohort. For details of the approach, see preprint (cite arxiv).  
+This software allows to calculate recombination probability of TCR sequence, simulate TCR repertoire, and identify candidate condition-associated T-cell receptor sequences using only patient cohort. For details of the approach, see [preprint](https://www.biorxiv.org/content/early/2017/09/27/195057).  
 
 ## Software requirements
 Any OS where R is available (Linux, OS X, Windows), however parallel computing is currently not available on Windows.  
@@ -139,7 +139,7 @@ CDR3s_p[p.adjust(CDR3s_p$pval_post,method="holm")<0.05,c("sim_num","CDR3.amino.a
 
 ```
 
-Here is short final output description. See methods section in the manuscript (link to arxiv) for detailed description. 
+Here is short final output description. See methods section in the [manuscript](https://www.biorxiv.org/content/early/2017/09/27/195057) for detailed description. 
 
 Field          | Description
 -----          | -----------
