@@ -164,6 +164,6 @@ tst_q5<-do_power_analysis(thres = 0.0001,niter = 100,q=5,n=30,nvec=rep(1e3,n),pd
 plot(10^-seq(7,2,length.out = 18),tst_q5$power,log="x",type="l",xlab="Pdata'",ylab="# significant results (out of 100)",ylim=c(0,100))
 
 #Average (over 100 simulations for each Pdata) number of donors with sequence:
-plot(10^-seq(7,2,length.out = 18),rowSums(tst10c$sizes)/100,log="x",type="l",xlab="Pdata'",ylab="# of donors with sequence")
+plot(10^-seq(7,2,length.out = 18),rowSums(tst_q5$sizes)/100,log="x",type="l",xlab="Pdata'",ylab="# of donors with sequence")
 
 ```
