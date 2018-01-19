@@ -67,3 +67,22 @@ do_analysis<-function(data,total,sizevec,indvec){
   tmp<-add_p_data_intervals(data,total=total,sizevec=sizevec, indvec=indvec )
   add_p_value(tmp,total=total,sizevec=sizevec, indvec=indvec)
 }
+
+#function to simulate and test different experiment design. 
+#n=cohort size, q=effect size, nvec=depth for each donor(clones sequences), pdata=clone abundance in population sampled, ps=bins for posterior distribution approximate calculation, 
+#niter - number of tests, thres=significance threshold for each test
+do_power_analysis<-function(n=30,q=10,nvec=rep(1e3,n),pdata=10^-seq(7,2,length.out = 18),ps=10^-seq(8,0,length.out = 100),niter=10,thres=0.01){
+  resmat<-matrix(0,nrow = length(pdata),ncol=niter)
+  resmat_size<-matrix(0,nrow = length(pdata),ncol=niter)
+  
+  for (i in 1:length(pdata)){
+    for (j in 1:niter){
+      xvec<-rbinom(n,1,(1-exp(-nvec*pdata[i])))
+      resmat_size[i,j]<-sum(xvec)
+      if (sum(xvec)>1){
+        resmat[i,j]<-(get_P_Data_posterior(x_vec = xvec,n_vec=nvec,ps = ps)$cumsum[which(ps>(pdata[i]/q))[1]])}
+      else {resmat[i,j]<-1}
+    }
+  }
+  list(power=rowSums(resmat<thres),sizes=resmat_size) 
+}
