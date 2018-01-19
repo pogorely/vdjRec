@@ -150,8 +150,9 @@ _P\_post_      | theoretical probability to observe sequence, estimated from rec
 _pval\_post_   | p\-value (not corrected for multiple testing)
 _effect\_size_ | log10(effect size) is log10(_ML_)\-log10(_P\_post_)
 
-#### Experiment design
-For details see _Designing the experiment_ section in the manuscript. Idea is to make a simulation to check, if clone with given _P\_data_ and _P\_post_(which is _q_ times lower than _P\_data_) would be found in cohort of size _n_, sequencing depths vector _nvec_, significance threshold _thres_ by our method. One could do _niter_ simulations, and function would return number of simulations when clone is below significant threshold, and also number of donors with clone for each simulation. Function return list of number of significant tests for each _P\_data_ value(_power_) and number of donors with sequence in each simulation(_sizes_).  
+#### Experiment design and power analysis
+For the details see _Designing the experiment_ section in the manuscript. 
+Idea is to make a simulation to check, if clone with given _P\_data_ and _P\_post_ (which is _q_ times lower than _P\_data_) would be found in cohort of size _n_, sequencing depths vector _nvec_, significance threshold _thres_ by our method. One could do _niter_ simulations, and function would return number of simulations when clone is below significant threshold, and also number of donors with clone for each simulation. Function return list of number of significant tests for each _P\_data_ value (_power_) and number of donors with sequence in each simulation (_sizes_).  
 Let's do a quick example:
 ```R
 source("analysis.R")
@@ -162,6 +163,7 @@ tst_q5<-do_power_analysis(thres = 0.0001,niter = 100,q=5,n=30,nvec=rep(1e3,30),p
 #lets plot the results!
 #Number of significant test depending of clone Pdata
 plot(10^-seq(7,2,length.out = 18),tst_q5$power,log="x",type="l",xlab="Pdata'",ylab="# significant results (out of 100)",ylim=c(0,100))
+#If clone is less abundant in population, it is harder to find it.
 
 #Average (over 100 simulations for each Pdata) number of donors with sequence:
 plot(10^-seq(7,2,length.out = 18),rowSums(tst_q5$sizes)/100,log="x",type="l",xlab="Pdata'",ylab="# of donors with sequence")
