@@ -158,7 +158,7 @@ source("analysis.R")
 
 #do niter=100 simulations for clone with effect size q=5,
 #and cohort size=30 for given values of pdata:
-tst_q5<-do_power_analysis(thres = 0.0001,niter = 100,q=5,n=30,nvec=rep(1e3,n),pdata=10^-seq(7,2,length.out = 18))
+tst_q5<-do_power_analysis(thres = 0.0001,niter = 100,q=5,n=30,nvec=rep(1e3,30),pdata=10^-seq(7,2,length.out = 18))
 #lets plot the results!
 #Number of significant test depending of clone Pdata
 plot(10^-seq(7,2,length.out = 18),tst_q5$power,log="x",type="l",xlab="Pdata'",ylab="# significant results (out of 100)",ylim=c(0,100))
