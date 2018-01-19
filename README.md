@@ -151,7 +151,7 @@ _pval\_post_   | p\-value (not corrected for multiple testing)
 _effect\_size_ | log10(effect size) is log10(_ML_)\-log10(_P\_post_)
 
 #### Experiment design
-For details see _Designing the experiment_ section in the manuscript. Idea is to make a simulation, to check, if clone with given _P\_data_ and _P\_post_, which is _q_ times lower than _P\_data_ would be found in cohort of size _n_, sequencing depths vector _nvec_, significance threshold _thres_ by our method. One could do _niter_ simulations, and function would return number of simulations when clone is below significant threshold, and also number of donors with clone. Function return list of number of significant tests for each _P\_data_ value, _power_ , and number of donors with sequence in each simulation, _sizes_.  
+For details see _Designing the experiment_ section in the manuscript. Idea is to make a simulation to check, if clone with given _P\_data_ and _P\_post_(which is _q_ times lower than _P\_data_) would be found in cohort of size _n_, sequencing depths vector _nvec_, significance threshold _thres_ by our method. One could do _niter_ simulations, and function would return number of simulations when clone is below significant threshold, and also number of donors with clone for each simulation. Function return list of number of significant tests for each _P\_data_ value(_power_) and number of donors with sequence in each simulation(_sizes_).  
 Let's do a quick example:
 ```R
 source("analysis.R")
