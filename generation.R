@@ -125,7 +125,7 @@ gen_VDJ<-function(n,Vseq,Jseq,Dseq,delV,delJ,delD,insLenVD,insLenDJ,insNuclVD,in
 }
 
 #function to generate beta chain sequence
-gen_beta<-function(n,V,J,pr=beta.prob,translate=T,inframe_only=T)
+gen_beta<-function(n,V,J,pr=beta.prob,translate=T,inframe_only=T,segments=segments)
 {
   tmp<-pr$P.ins.nucl[,1]
   pr$P.ins.nucl<-as.matrix(pr$P.ins.nucl[,-1])
@@ -189,5 +189,19 @@ gen_beta_repertoire<-function(n,VJ_usage,pr=beta.prob,translate=T,inframe_only=T
   do.call(rbind,resl)
 }
 
+gen_beta_repertoire_short<-function(n,VJ_usage,pr=beta.prob,translate=T,inframe_only=T){
+  #sample n into VJ_classes. 
+  #VJ usage is table V J prob. 
+  VJ_usage$sample<-rmultinom(1,size=n,prob = VJ_usage$clonotypes)
+  resl<-list()
+  for (i in 1:nrow(VJ_usage)){
+    if(VJ_usage$sample[i]!=0){
+      gen_seq<-gen_beta(n=VJ_usage$sample[i],V=VJ_usage$v[i],J=VJ_usage$j[i])
+      if(length(gen_seq)!=0)
+        resl[[i]]<-data.frame(seq=gen_seq,V=VJ_usage$v[i],J=VJ_usage$j[i],stringsAsFactors = F)}
+  }
+  tmp<-do.call(rbind,resl)
+  paste0(tmp$seq,"_",tmp$V)
+}
 
 
