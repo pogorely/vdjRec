@@ -62,6 +62,32 @@ estimate_pgen_aa_alpha<-function(data,V="TRBV9",J="TRBJ2-3",iter=3,nrec=5e5,core
   data
 }
 
+estimate_pgen_aa_alpha_repertoire<-function(data,VJ_usage=VJ_usage_alpha_tw,iter=3,nrec=5e5,cores=1,colname="CDR3.amino.acid.sequence"){
+  res<-mclapply(1:cores,FUN = 
+                  function(x){
+                    r<-rep(0,nrow(data));
+                    for (i in 1:iter)
+                    {r<-r+table(factor(gen_alpha_repertoire_CDR3(n = nrec,VJ_usage = VJ_usage),levels = data[[colname]]))}
+                    r
+                  },mc.cores = cores)  
+  sim_num<-rowSums(do.call(cbind,res)) 
+  data<-cbind(sim_num,data)
+  data
+}
+
+estimate_pgen_aa_beta_repertoire<-function(data,VJ_usage=get_vj("../Pattern/VDJDB/public-epitope-master/rearr_model/hip_nonfunc_vj_usage.txt"),iter=3,nrec=5e5,cores=1,colname="CDR3.amino.acid.sequence"){
+  res<-mclapply(1:cores,FUN = 
+                  function(x){
+                    r<-rep(0,nrow(data));
+                    for (i in 1:iter)
+                    {r<-r+table(factor(gen_beta_repertoire_CDR3(n = nrec,VJ_usage = VJ_usage),levels = data[[colname]]))}
+                    r
+                  },mc.cores = cores)  
+  sim_num<-rowSums(do.call(cbind,res)) 
+  data<-cbind(sim_num,data)
+  data
+}
+
 estimate_pgen_aa_div<-function(data,V="TRBV9",J="TRBJ2-3",iter=3,nrec=5e5,cores=1,colname="CDR3.amino.acid.sequence",targets=""){
     res<-mclapply(1:cores,FUN = 
                   function(x){
